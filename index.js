@@ -2,6 +2,7 @@ const express = require ("express");
 const mongoose = require("mongoose");
 const user = require("./routes/user.routes");
 const actor = require ("./routes/actor.routes");
+const movie = require ("./routes/movie.routes");
 const app = express();
 app.use(express.json());
 // >>>>>>>>>>>>>>>>>> Mongodb Connection Start <<<<<<<<<<<<<<<<<<//
@@ -14,7 +15,7 @@ mongoose.connect("mongodb://localhost/movies").then(()=>{
 
 app.use("/api/users", user);
 app.use("/api/actors", actor);
-
+app.use("/api/movies" , movie);
 
 
 // >>>>>>>>>>>>>>>>>> Port Listening Start <<<<<<<<<<<<<<<<<<//
