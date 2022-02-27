@@ -2,11 +2,10 @@ const {Movie} = require("../models/movie.models");
 const {Actor} = require("../models/actor.models");
 
 // >>>>>>>>>>>>>>>>> Get  All Movies Start <<<<<<<<<<<<<<<//
-
 const  getMovies = async (req , res) =>{
      try{
       const movies = await Movie.find()
-      .select("name genre businessDone rating review -_id")
+      .select("name genre businessDone rating -review -_id")
       .populate("genre" , "name -_id")
       .populate("actors" , "name age gender -_id");
       if(movies.length < 1) return res.status(404).send("Movies not Found ");
@@ -25,7 +24,7 @@ const  getMovies = async (req , res) =>{
 const getSpecificMovie = async (req , res) =>{
     try{
     const movie = await Movie.findById(req.params.id)
-    .select("name genre businessDone rating review -_id")
+    .select("name genre businessDone rating review ")
     .populate("actors" , "name age gender -_id");
     if (!movie) return res.status(404).send("Movie not Found");
     res.status(200).send(movie);
@@ -38,13 +37,14 @@ const getSpecificMovie = async (req , res) =>{
 
 // >>>>>>>>>>>>>>>>> Get  Specific Movies End <<<<<<<<<//
 
+
 // >>>>>>>>>>>>>>>>> Get  Specific Movies By Genre Start <<<<<<<<<//
  
 const getMoviesByGenre = async(req, res) =>{
     
     try{
             const movies = await Movie.find({genre: req.body.genre})
-            .select("name genre businessDone -_id")
+            .select("name genre businessDone ")
             .populate("actors" , "name age gender -_id");
             if(movies < 1) return res.status(404).send("No Movies for Given Category..")
             res.status(200).send(movies);
@@ -87,15 +87,13 @@ const postMovie = async (req,res) =>{
 
 // >>>>>>>>>>>>>>>>> Update Movie Start <<<<<<<<<<<<<<<//
 const updateMovie = async (req , res) =>{
-    const {name , genre ,businessDone , actorId , rating, review }  = req.body
+    const {name , genre ,businessDone , actorId  }  = req.body
     try {
            const  movie = await Movie.findByIdAndUpdate(req.params.id , {
                  name : name ,
                  genre : genre,
                  businessDone : businessDone,
                  actors : actorId,
-                 rating : rating, 
-                 review : review,
            });
             if(!movie) return res.status(404).send("Movie Not Found...");
             res.status(200).send("Movie Updated Successfully..");

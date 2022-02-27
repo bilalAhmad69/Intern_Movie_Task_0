@@ -24,9 +24,10 @@ const movieSchema = mongoose.Schema({
          enum : [1,2,3,4,5],
          default : 1
      },
-     review : {
-         type : String,
-     }
+     review : [{
+         type : mongoose.Types.ObjectId,
+         ref : "Review"
+     }]
 })
 
 const Movie = mongoose.model("Movie" , movieSchema);

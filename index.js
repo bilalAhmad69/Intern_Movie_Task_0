@@ -4,6 +4,8 @@ const user = require("./routes/user.routes");
 const actor = require ("./routes/actor.routes");
 const movie = require ("./routes/movie.routes");
 const auth = require("./routes/auth.routes");
+const rating = require ("./routes/rating.routes");
+const review = require ("./routes/review.routes");
 const app = express();
 app.use(express.json());
 // >>>>>>>>>>>>>>>>>> Mongodb Connection Start <<<<<<<<<<<<<<<<<<//
@@ -18,7 +20,8 @@ app.use("/api/users", user);
 app.use("/api/actors", actor);
 app.use("/api/movies" , movie);
 app.use("/api/auth", auth);
-
+app.use("/api/ratings", rating);
+app.use("/api/reviews" , review);
 
 // >>>>>>>>>>>>>>>>>> Port Listening Start <<<<<<<<<<<<<<<<<<//
 
