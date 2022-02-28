@@ -1,4 +1,5 @@
 const mongoose = require ("mongoose");
+const jwt = require ("jsonwebtoken");
 const Joi = require ("joi");
 const userSchema = mongoose.Schema({
     name : {
@@ -22,8 +23,21 @@ const userSchema = mongoose.Schema({
         minLength : 5, 
         maxLength : 1024,
         required: true,
+    },
+    isAdmin : {
+        type:Boolean
     }
 });
+
+
+// adding new function to user models to generate jwt token
+
+userSchema.methods.generateAuthToken = function () {
+
+    //  i will saved this jwtAuthToken if environment variable 
+    const token = jwt.sign({_id : this._id , isAdmin : this.isAdmin}, "jwtAuthToken");
+    return token;
+}
 
 const User = mongoose.model("User" , userSchema);
 

@@ -24,7 +24,9 @@ const  postUser = async(req , res) =>{
      })   
 
      await user.save();
-     res.status(200).send("User Successfully Registered");
+    //  function for generating token
+     const token = user.generateAuthToken();
+     res.header("x-auth-token" , token).status(200).send("User Successfully Registered");
     }
     catch(e)
     {

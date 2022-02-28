@@ -6,7 +6,8 @@ const authUser = async (req , res) =>{
     if(!user)  return res.status(400).send("Email or Password is invalid ... ");
     const validPassword = await bcrypt.compare(req.body.password , user.password);
     if(!validPassword) return res.status(400).send("Email or Password is invalid ...");
-    res.send("Log in...");
+     const token = user.generateAuthToken();
+     res.header("x-auth-token" , token).send("You are login..");
 }
 
 

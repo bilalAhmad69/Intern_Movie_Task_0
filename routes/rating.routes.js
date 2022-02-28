@@ -1,7 +1,9 @@
 const express = require ("express");
+const auth = require ("../middleware/auth");
 const { postRating, updateRating, getMovieRating } = require("../controller/rating.controller");
 const router = express.Router();
 router.get("/:id" , getMovieRating);
-router.post("/" , postRating);
-router.put("/:id", updateRating);
+// only registered user can put and post the ratings
+router.post("/" ,  auth,postRating);
+router.put("/:id",auth, updateRating);
 module.exports = router;
