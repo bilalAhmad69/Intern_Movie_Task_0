@@ -25,10 +25,15 @@ const getMovieRating =  async (req , res) =>{
 const postRating = async (req , res) => {
     const {userId , movieId , rating} = req.body;
     try{
+    //  is user is registered or not
     const user = await User.findById(userId);
     if(!user) return res.status(400).send("Cannot give Rating  You are not Registered");
+    //  check the movie is available or not
     const movie = await Movie.findById(movieId);
     if(!movie) return res.status(400).send("Bad Request ");
+    // check if user once rated the movie then he only update
+    const isRated = Rating.find().and([{userId} , {movieId}]);
+    if(isRated) return res.send("you are Rated this movie once..");
     const movieRating = new Rating({
         user : userId,
         movie : movieId,

@@ -5,8 +5,7 @@ const {Actor} = require("../models/actor.models");
 const  getMovies = async (req , res) =>{
      try{
       const movies = await Movie.find()
-      .select("name genre businessDone rating -review -_id")
-      .populate("genre" , "name -_id")
+      .select("name genre businessDone rating  -_id")
       .populate("actors" , "name age gender -_id");
       if(movies.length < 1) return res.status(404).send("Movies not Found ");
       res.status(200).send(movies);
@@ -44,7 +43,7 @@ const getMoviesByGenre = async(req, res) =>{
     
     try{
             const movies = await Movie.find({genre: req.body.genre})
-            .select("name genre businessDone ")
+            .select("name genre businessDone rating")
             .populate("actors" , "name age gender -_id");
             if(movies < 1) return res.status(404).send("No Movies for Given Category..")
             res.status(200).send(movies);

@@ -25,8 +25,10 @@ const getMovieReview = async (req , res) =>{
 const postMovieReview = async (req, res) =>{
     const {userId , movieId , review} = req.body;
     try{
+        // check the user registration
     const user = await User.findById(userId);
     if(!user) return res.status(400).send("Cannot give Rating  You are not Registered");
+    //    check the movie is available
     const movie = await Movie.findById(movieId);
     if(!movie) return res.status(400).send("Bad Request ");
     const movieReview = new MovieReview({

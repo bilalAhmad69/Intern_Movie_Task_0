@@ -7,10 +7,10 @@ router.get("/" , getMovies);
 router.get("/byGenre", getMoviesByGenre);
 router.get("/totalbusiness/:id" , totalBusinessByActor);
 router.get("/:id", getSpecificMovie);
-// post and put routes are protected only admin can access....
+//Delete ,  post and put routes are protected only admin can access....
 router.post("/" , [auth , admin], postMovie);
 router.put("/:id" ,[auth , admin], updateMovie);
-router.delete("/:id" , deleteMovie);
+router.delete("/:id",[auth , admin] , deleteMovie);
 
 
 module.exports = router;
