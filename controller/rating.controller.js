@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 const { Movie } = require("../models/movie.models");
 const {Rating} = require ("../models/rating.models");
 const { User } = require("../models/user.models");
@@ -32,8 +33,8 @@ const postRating = async (req , res) => {
     const movie = await Movie.findById(movieId);
     if(!movie) return res.status(400).send("Bad Request ");
     // check if user once rated the movie then he only update
-    const isRated = Rating.find().and([{userId} , {movieId}]);
-    if(isRated) return res.send("you are Rated this movie once..");
+    const isRated = await Rating.find().and([{user : userId} , {movie : movieId}]);
+    if(isRated.length >= 1) return res.send("you are Rated this movie once..");
     const movieRating = new Rating({
         user : userId,
         movie : movieId,
@@ -80,18 +81,20 @@ const updateRating = async (req ,res) =>{
 
 async function updateMovieRating (movie)
 {
-      const ratings = await Rating.find(movie._id);
+     
+      const ratings = await Rating.find({movie :movie._id});
       if(ratings< 1) return;
-      let sum = 0 ;
+       let sum = 0 ;
       let count = 0;
-      // calculate all of the ratings of specific movie 
-      ratings.map((rate)=>{
-           sum += rate.rating;
+       // calculate all of the ratings of specific movie 
+        ratings.map((rate)=>{
+       sum += rate.rating;
            count++;
       })
+
       let rating = sum /count;
       movie.rating = Math.round(rating);
-      await movie.save();
+       await movie.save();
 }
 
 exports.getMovieRating = getMovieRating;
