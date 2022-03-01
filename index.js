@@ -1,4 +1,5 @@
 const express = require ("express");
+const config = require ("config");
 const mongoose = require("mongoose");
 const user = require("./routes/user.routes");
 const actor = require ("./routes/actor.routes");
@@ -8,6 +9,19 @@ const rating = require ("./routes/rating.routes");
 const review = require ("./routes/review.routes");
 const app = express();
 app.use(express.json());
+
+// >>>>>>>>>>>>>> checking the environment Varaible for JWT  Start <<<<<<<<<<< //
+
+if(!config.get("jwtPrivateKey"))
+{
+    console.error("FATAL ERROR : jwtPrivateKey is not defined ...");
+    process.exit(1);
+}
+
+// >>>>>>>>>>>>>> checking the environment Varaible for JWT  End <<<<<<<<<<< //
+
+
+
 // >>>>>>>>>>>>>>>>>> Mongodb Connection Start <<<<<<<<<<<<<<<<<<//
 
 mongoose.connect("mongodb://localhost/movies").then(()=>{
