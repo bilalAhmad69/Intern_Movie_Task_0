@@ -1,5 +1,5 @@
 const { Movie } = require("../models/movie.models");
-const {Rating} = require ("../models/rating.models");
+const {Rating, validateRating} = require ("../models/rating.models");
 const { User } = require("../models/user.models");
 
 //>>>>>>>>>>>>>> Get Rating Start <<<<<<<<<<<<<<<<<//
@@ -23,12 +23,17 @@ const getMovieRating =  async (req , res) =>{
 
 //>>>>>>>>>>>>>> Post Rating Start <<<<<<<<<<<<<<<<<//
 const postRating = async (req , res) => {
+    const {error} = validateRating(req.body);
+    if(error) return res.status(400).send(error.message);
     const {userId , movieId , rating} = req.body;
     try{
+    const isMovieRated = await Rating.find().and([{movie:movieId} , {user : userId}]);
+    if(isMovieRated.length >0) return res.status(400).send("You rated this movie once");
+    
     const user = await User.findById(userId);
     if(!user) return res.status(400).send("Cannot give Rating  You are not Registered");
     const movie = await Movie.findById(movieId);
-    if(!movie) return res.status(400).send("Bad Request ");
+    if(!movie) return res.status(404).send("Movie not Found");
     const movieRating = new Rating({
         user : userId,
         movie : movieId,
@@ -43,6 +48,7 @@ const postRating = async (req , res) => {
     }
     catch (e)
     {
+        console.log(e);
         res.send(e.message);
     }
 
@@ -71,7 +77,7 @@ const updateRating = async (req ,res) =>{
 //>>>>>>>>>>>>>> Update Rating End <<<<<<<<<<<<<<<<<//
 
 
-// update the movie ratings 
+// update the movie ratings and calculate the average
 
 async function updateMovieRating (movie)
 {
