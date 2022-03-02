@@ -81,8 +81,7 @@ const updateRating = async (req ,res) =>{
 
 async function updateMovieRating (movie)
 {
-      const ratings = await Rating.find(movie._id);
-      if(ratings< 1) return;
+      const ratings = await Rating.find({movie : movie._id});
       let sum = 0 ;
       let count = 0;
       // calculate all of the ratings of specific movie 
