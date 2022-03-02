@@ -1,4 +1,4 @@
-const {MovieReview} = require ("../models/review.models");
+const {MovieReview, validateReview} = require ("../models/review.models");
 const {User} = require ("../models/user.models");
 const {Movie} = require ("../models/movie.models");
 
@@ -23,12 +23,14 @@ const getMovieReview = async (req , res) =>{
 // >>>>>>>>>>>> Post Review Start <<<<<<<<<<<<<<<< //
 
 const postMovieReview = async (req, res) =>{
+    const {error} = validateReview(req.body);
+    if (error) return res.status(400).send(error.message);
     const {userId , movieId , review} = req.body;
     try{
     const user = await User.findById(userId);
     if(!user) return res.status(400).send("Cannot give Rating  You are not Registered");
     const movie = await Movie.findById(movieId);
-    if(!movie) return res.status(400).send("Bad Request ");
+    if(!movie) return res.status(404).send("Movie not Found ");
     const movieReview = new MovieReview({
         user : userId,
         movie : movieId,
@@ -41,7 +43,7 @@ const postMovieReview = async (req, res) =>{
 }
     catch (e)
     {
-        res.send(e.message);
+        res.send(e.message);           
     }
 }
 
