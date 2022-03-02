@@ -28,25 +28,15 @@ const postRating = async (req , res) => {
     if(error) return res.status(400).send(error.message);
     const {userId , movieId , rating} = req.body;
     try{
-<<<<<<< HEAD
-    //  is user is registered or not
-=======
+    // check is movie rated
     const isMovieRated = await Rating.find().and([{movie:movieId} , {user : userId}]);
     if(isMovieRated.length >0) return res.status(400).send("You rated this movie once");
-    
->>>>>>> movies
+    //  is user is registered or not
     const user = await User.findById(userId);
     if(!user) return res.status(400).send("Cannot give Rating  You are not Registered");
     //  check the movie is available or not
     const movie = await Movie.findById(movieId);
-<<<<<<< HEAD
-    if(!movie) return res.status(400).send("Bad Request ");
-    // check if user once rated the movie then he only update
-    const isRated = await Rating.find().and([{user : userId} , {movie : movieId}]);
-    if(isRated.length >= 1) return res.send("you are Rated this movie once..");
-=======
-    if(!movie) return res.status(404).send("Movie not Found");
->>>>>>> movies
+    if(!movie) return res.status(404).send("Movie not found");
     const movieRating = new Rating({
         user : userId,
         movie : movieId,
@@ -94,15 +84,9 @@ const updateRating = async (req ,res) =>{
 
 async function updateMovieRating (movie)
 {
-<<<<<<< HEAD
-     
-      const ratings = await Rating.find({movie :movie._id});
-      if(ratings< 1) return;
-       let sum = 0 ;
-=======
+
       const ratings = await Rating.find({movie : movie._id});
       let sum = 0 ;
->>>>>>> movies
       let count = 0;
        // calculate all of the ratings of specific movie 
         ratings.map((rate)=>{
