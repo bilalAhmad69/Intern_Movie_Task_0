@@ -1,4 +1,4 @@
-const {Movie} = require("../models/movie.models");
+const {Movie, validateMovie} = require("../models/movie.models");
 const {Actor} = require("../models/actor.models");
 
 // >>>>>>>>>>>>>>>>> Get  All Movies Start <<<<<<<<<<<<<<<//
@@ -23,7 +23,7 @@ const  getMovies = async (req , res) =>{
 const getSpecificMovie = async (req , res) =>{
     try{
     const movie = await Movie.findById(req.params.id)
-    .select("name genre businessDone rating review ")
+    .select("name genre businessDone rating")
     .populate("actors" , "name age gender -_id");
     if (!movie) return res.status(404).send("Movie not Found");
     res.status(200).send(movie);
@@ -61,6 +61,9 @@ const getMoviesByGenre = async(req, res) =>{
 // >>>>>>>>>>>>>>>>> Post Movie Start <<<<<<<<<<<<<<<//
 
 const postMovie = async (req,res) =>{
+    // check the front end data
+    const {error} = validateMovie(req.body);
+    if(error) return res.status(400).send(error.message);
     const {name , genre , businessDone, actorId } = req.body;
     try{
         // check the actor is registered or not 
@@ -86,6 +89,9 @@ const postMovie = async (req,res) =>{
 
 // >>>>>>>>>>>>>>>>> Update Movie Start <<<<<<<<<<<<<<<//
 const updateMovie = async (req , res) =>{
+    // check the front end data
+    const {error} = validateMovie(req.body);
+    if(error) return res.status(400).send(error.message);
     const {name , genre ,businessDone , actorId  }  = req.body
     try {
            const  movie = await Movie.findByIdAndUpdate(req.params.id , {
