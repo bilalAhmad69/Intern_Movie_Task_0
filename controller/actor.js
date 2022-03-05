@@ -1,7 +1,6 @@
-const {Actor , validateActor} = require("../models/actor.models")
-
-//  >>>>>>>  Get All Actors  Start <<<<<<<<<<<  //
-
+const {Actor} = require("../models/Actor");
+const {validateActor} = require("./validation");
+// Get All Actors
 const getActors = async(req,res) =>{
     try{
     const actor = await Actor.find().select("name age gender -_id");
@@ -12,23 +11,15 @@ const getActors = async(req,res) =>{
         res.send(e.message)
     }
 }
-
-//  >>>>>>>  Get All Actors  End<<<<<<<<<<<  //
-
-//  >>>>>>>  Get Specific Actor  Start <<<<<<<<<<<  //
-const specificActor = async(req,res) =>{
-   console.log(req.params.id)
+//  Get Specific Actor
+const getActor = async(req,res) =>{
     const actor = await Actor.findById({_id : req.params.id});
     if(!actor) return res.status(404).send("Actor Not found");
     res.status(200).send(actor);
 
 }
 
-//  >>>>>>>  Get Specific Actor  End <<<<<<<<<<<  //
-
-
-
-//>>>>>>>>>>>>> post Actor Start <<<<<<<<<<<<<<<<//
+// post Actor
 const postActor = async (req , res) =>{
     const {error} = validateActor(req.body);
     if (error) return res.status(400).send(error.message);
@@ -47,21 +38,11 @@ catch (e)
     res.send(e.message);
 }
  }
-
-//>>>>>>>>>>>>> post Actor End <<<<<<<<<<<<<<<<//
-
-//>>>>>>>>>>>>> Update Actor Start <<<<<<<<<<<<<<<<//
+// update Actor
 
  const updateActor = async (req , res) =>{
-     const {error} = validateActor(req.boyd);
-     if(error) return res.status(400).send(error.message);
-     const {name , age , gender} = req.body;
     try{
-        const actor = await Actor.findByIdAndUpdate(req.params.id , {
-            name : name,
-            age : age ,
-            gender : gender
-        })
+        const actor = await Actor.findByIdAndUpdate(req.params.id , req.body);
         if(!actor) return res.status(404).send("actor not found")
         res.status(200).send("Actor Succesfully Saved");
     
@@ -72,13 +53,7 @@ catch (e)
     }
  }
 
-//>>>>>>>>>>>>> Update Actor End <<<<<<<<<<<<<<<<//
-
-
-
-
-
 exports.getActors = getActors;
 exports.postActor = postActor;
-exports.specificActor = specificActor;
+exports.getActor = getActor;
 exports.updateActor = updateActor;
