@@ -1,7 +1,6 @@
 const {Movie, validateMovie} = require("../models/movie.models");
 const {Actor} = require("../models/actor.models");
-
-// >>>>>>>>>>>>>>>>> Get  All Movies Start <<<<<<<<<<<<<<<//
+// get Movies
 const  getMovies = async (req , res) =>{
      try{
       const movies = await Movie.find()
@@ -16,11 +15,8 @@ const  getMovies = async (req , res) =>{
      }
 }
 
-// >>>>>>>>>>>>>>>>> Get  All Movies End <<<<<<<<<<<<<<<//
-
-// >>>>>>>>>>>>>>>>> Get  Specific Movies Start <<<<<<<<<//
-
-const getSpecificMovie = async (req , res) =>{
+// get Specific movie
+const getMovie = async (req , res) =>{
     try{
     const movie = await Movie.findById(req.params.id)
     .select("name genre businessDone rating")
@@ -34,11 +30,9 @@ const getSpecificMovie = async (req , res) =>{
     }
 }
 
-// >>>>>>>>>>>>>>>>> Get  Specific Movies End <<<<<<<<<//
 
 
-// >>>>>>>>>>>>>>>>> Get  Specific Movies By Genre Start <<<<<<<<<//
- 
+// Get  Specific Movies By Genre 
 const getMoviesByGenre = async(req, res) =>{
     
     try{
@@ -53,13 +47,7 @@ const getMoviesByGenre = async(req, res) =>{
         res.send(e.message)
     }
 }
-
-// >>>>>>>>>>>>>>>>> Get  Specific Movies By Genre End <<<<<<<<<//
-
-
-
-// >>>>>>>>>>>>>>>>> Post Movie Start <<<<<<<<<<<<<<<//
-
+// Post Movie
 const postMovie = async (req,res) =>{
     // check the front end data
     const {error} = validateMovie(req.body);
@@ -85,13 +73,10 @@ const postMovie = async (req,res) =>{
     }
 }
 
-// >>>>>>>>>>>>>>>>> Post Movie End <<<<<<<<<<<<<<<//
-
-// >>>>>>>>>>>>>>>>> Update Movie Start <<<<<<<<<<<<<<<//
+// update Movie 
 const updateMovie = async (req , res) =>{
     // check the front end data
-    const {error} = validateMovie(req.body);
-    if(error) return res.status(400).send(error.message);
+  
     const {name , genre ,businessDone , actorId  }  = req.body
     try {
            const  movie = await Movie.findByIdAndUpdate(req.params.id , {
@@ -109,10 +94,8 @@ const updateMovie = async (req , res) =>{
     }
 }
 
-// >>>>>>>>>>>>>>>>> Update Movie End <<<<<<<<<<<<<<<//
 
-// >>>>>>>>>>>>>>>>> Delete Specific Movie Start <<<<<<<<<<<<<<<//
-
+// Delete Movie
 const deleteMovie = async(req, res) =>{
     try{
         const movie =  await Movie.findByIdAndDelete(req.params.id);
@@ -124,10 +107,7 @@ const deleteMovie = async(req, res) =>{
         res.send(e.message);
     }
 }
-
-// >>>>>>>>>>>>>>>>> Delete Specific Movie End <<<<<<<<<<<<<<<//
-
-//>>>>>>>>>>>>>>> Total Buisness By Specific Actor Start <<<<<<<<<<<<<<<<//
+// Total Business Done By Actor
 const totalBusinessByActor = async (req , res) =>{
     try {
     const movies = await Movie.find({actors : req.params.id})
@@ -145,10 +125,9 @@ const totalBusinessByActor = async (req , res) =>{
     }
     
 }
-//>>>>>>>>>>>>>>> Total Buisness By Specific Actor End<<<<<<<<<<<<<<<<//
 
 exports.getMovies = getMovies;
-exports.getSpecificMovie = getSpecificMovie;
+exports.getMovie = getMovie;
 exports.getMoviesByGenre = getMoviesByGenre;
 exports.postMovie = postMovie;
 exports.updateMovie = updateMovie;
