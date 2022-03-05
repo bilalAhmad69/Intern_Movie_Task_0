@@ -1,5 +1,5 @@
 const {Actor} = require("../models/Actor");
-const {validateActor} = require("./validation");
+const validateActor = require("./validation");
 // Get All Actors
 const getActors = async(req,res) =>{
     try{
@@ -25,16 +25,17 @@ const postActor = async (req , res) =>{
     if (error) return res.status(400).send(error.message);
     const {name , age , gender} = req.body;
     try {
-    let actor = new Actor ({
+    let actor =  new Actor ({
         name : name,
         age : age ,
         gender : gender
     })
+   
      await actor.save();
     res.status(200).send("Actor succesfully saved");
 }
 catch (e)
-{
+{  
     res.send(e.message);
 }
  }

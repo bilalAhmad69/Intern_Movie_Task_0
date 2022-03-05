@@ -2,14 +2,13 @@ const express = require ("express");
 const config = require ("config");
 const mongoose = require("mongoose");
 const user = require("./routes/user.routes");
-require("./routes/index");
+const actor = require("./routes/actor");
 const movie = require ("./routes/movie.routes");
 const auth = require("./routes/auth.routes");
 const rating = require ("./routes/rating.routes");
 const review = require ("./routes/review.routes");
 const app = express();
 app.use(express.json());
-
 //  Checking Environment varaible is set ?
 
 if(!config.get("jwtPrivateKey"))
@@ -25,6 +24,7 @@ mongoose.connect("mongodb://localhost/movies").then(()=>{
 }).catch((e)=>console.log(e.message));
 
 app.use("/api/users", user);
+app.use("/api/actors" , actor )
 app.use("/api/movies" , movie);
 app.use("/api/auth", auth);
 app.use("/api/ratings", rating);

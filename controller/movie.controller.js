@@ -1,5 +1,5 @@
 const {Movie, validateMovie} = require("../models/movie.models");
-const {Actor} = require("../models/actor.models");
+const {Actor} = require("../models/Actor");
 
 // >>>>>>>>>>>>>>>>> Get  All Movies Start <<<<<<<<<<<<<<<//
 const  getMovies = async (req , res) =>{

@@ -1,3 +1,4 @@
+const Joi = require ("joi");
 // Actor Validation
 module.exports = validateActor = (actor) =>{
     const schema = Joi.object({
@@ -5,7 +6,5 @@ module.exports = validateActor = (actor) =>{
         age : Joi.number().min(3).max(150).required(),
         gender : Joi.string().valid("Male" , "Female" , "Transgender")
     })
-
    return schema.validate(actor);
 }
-
