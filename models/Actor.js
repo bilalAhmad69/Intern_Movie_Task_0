@@ -20,21 +20,5 @@ const actorSchema = mongoose.Schema({
      }
 });
 
-// front end validation using JOi
-
-
-const validateActor = (actor) =>{
-    const schema = Joi.object({
-        name : Joi.string().min(3).max(50).required(),
-        age : Joi.number().min(3).max(150).required(),
-        gender : Joi.string().valid("Male" , "Female" , "Transgender")
-    })
-
-   return schema.validate(actor);
-}
-
-
-
 const Actor = new mongoose.model('Actor'  , actorSchema);
 exports.Actor = Actor;
-exports.validateActor = validateActor;
