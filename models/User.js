@@ -1,7 +1,6 @@
 const mongoose = require ("mongoose");
 const jwt = require ("jsonwebtoken");
 const config = require("config");
-const Joi = require ("joi");
 const userSchema = mongoose.Schema({
     name : {
         type : String,
@@ -42,19 +41,6 @@ userSchema.methods.generateAuthToken = function () {
 
 const User = mongoose.model("User" , userSchema);
 
-// Data Validation of Frontend 
-
-const validateUser = (user) =>{
-      const schema = Joi.object({
-          name : Joi.string().min(3).max(50).required(),
-          email : Joi.string().min(5).max(255).required().email(),
-          phoneNumber : Joi.number().required(),
-          password : Joi.string().min(5).max(255).required(),
-
-      })
-      return schema.validate(user);
-}
 
 
 exports.User = User;
-exports.validateUser = validateUser;

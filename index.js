@@ -1,12 +1,12 @@
 const express = require ("express");
 const config = require ("config");
 const mongoose = require("mongoose");
-const user = require("./routes/user.routes");
+const user = require("./routes/user");
 const actor = require("./routes/actor");
 const movie = require ("./routes/movie");
-const auth = require("./routes/auth.routes");
-const rating = require ("./routes/rating.routes");
-const review = require ("./routes/review.routes");
+const auth = require("./routes/auth");
+const rating = require ("./routes/rating");
+const review = require ("./routes/review");
 const app = express();
 app.use(express.json());
 //  Checking Environment varaible is set ?

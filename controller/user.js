@@ -1,8 +1,8 @@
-const {User , validateUser}  = require ("../models/user.models");
+const {User}  = require ("../models/User");
+const validateUser = require ("./validation");
 const bcrypt = require ("bcrypt");
 
-// >>>>>>>>>> Post User Start <<<<<<<<<<  //
-
+// post User
 const  postUser = async(req , res) =>{
     // Validate Data from frontend using Joi
     const {error} = validateUser (req.body);
@@ -33,7 +33,5 @@ const  postUser = async(req , res) =>{
         res.send(e.message);
     }
 }
-
-// >>>>>>>>>> Post User End <<<<<<<<<<  //
 
 exports.postUser = postUser;

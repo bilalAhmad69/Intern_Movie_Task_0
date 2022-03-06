@@ -1,6 +1,6 @@
-const {User}  = require ("../models/user.models");
+const {User}  = require ("../models/User");
 const bcrypt = require("bcrypt");
-
+// login
 const authUser = async (req , res) =>{
     let user = await User.findOne({email : req.body.email});
     if(!user)  return res.status(400).send("Email or Password is invalid ... ");

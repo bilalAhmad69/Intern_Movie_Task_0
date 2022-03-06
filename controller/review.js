@@ -1,9 +1,9 @@
-const {MovieReview, validateReview} = require ("../models/review.models");
-const {User} = require ("../models/user.models");
+const {MovieReview} = require ("../models/Review");
+const validateReview = require ("./validation");
+const {User} = require ("../models/User");
 const {Movie} = require ("../models/Movie");
-
-// >>>>>>>>>> get Review Start <<<<<<<<<<<<<<<<<<//
-const getMovieReview = async (req , res) =>{
+// get movie reviews
+const getMovieReviews = async (req , res) =>{
 //   specific movie id 
    try {
     const movieReviews = await MovieReview.find({movie:req.params.id}).select("review ")
@@ -18,9 +18,8 @@ const getMovieReview = async (req , res) =>{
    }
 
 }
-// >>>>>>>>>> get Review Start <<<<<<<<<<<<<<<<<<//
 
-// >>>>>>>>>>>> Post Review Start <<<<<<<<<<<<<<<< //
+//Post Review 
 
 const postMovieReview = async (req, res) =>{
     const {error} = validateReview(req.body);
@@ -48,11 +47,7 @@ const postMovieReview = async (req, res) =>{
         res.send(e.message);           
     }
 }
-
-// >>>>>>>>>>>> Post Review End <<<<<<<<<<<<<<<< //
-
-
-// >>>>>>>>>>>> Update Review Start <<<<<<<<<<<<<<<< //
+//  Update Review
 
 const updateMovieReview = async(req,res) =>{
 
@@ -70,8 +65,6 @@ catch (e)
 }
 }
 
-// >>>>>>>>>>>> Update Review End <<<<<<<<<<<<<<<< //
-
-exports.getMovieReview = getMovieReview;
+exports.getMovieReview = getMovieReviews;
 exports.postMovieReview = postMovieReview;
 exports.updateMovieReview = updateMovieReview;

@@ -1,5 +1,5 @@
 const express = require("express");
-const { postMovieReview, updateMovieReview, getMovieReview } = require("../controller/review.controller");
+const { postMovieReview, updateMovieReview, getMovieReview } = require("../controller/review");
 const auth = require ("../middleware/auth");
 const router = express.Router();
 router.get("/:id" , getMovieReview);
