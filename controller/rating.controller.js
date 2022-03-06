@@ -1,4 +1,3 @@
-const res = require("express/lib/response");
 const { Movie } = require("../models/Movie");
 const {Rating, validateRating} = require ("../models/rating.models");
 const { User } = require("../models/user.models");

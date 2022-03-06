@@ -8,3 +8,16 @@ module.exports = validateActor = (actor) =>{
     })
    return schema.validate(actor);
 }
+
+//  Movie Validation
+module.exports =  validateMovie = (movie) =>{
+
+    const schema = Joi.object({
+        name : Joi.string().min(3).max(255).required(),
+        genre : Joi.string().min(3).max(50).required(),
+        businessDone : Joi.number().required(),
+        actorId : Joi.string().hex().length(24)
+    })
+        return schema.validate(movie);
+
+}

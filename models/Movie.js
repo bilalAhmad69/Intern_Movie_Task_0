@@ -34,20 +34,6 @@ const movieSchema = mongoose.Schema({
 
 const Movie = mongoose.model("Movie" , movieSchema);
 
-// Front-end Validation using Joi
-
-function validateMovie (movie) {
-
-    const schema = Joi.object({
-        name : Joi.string().min(3).max(255).required(),
-        genre : Joi.string().min(3).max(50).required(),
-        businessDone : Joi.number().required(),
-        actorId : Joi.string().hex().length(24)
-    })
-        return schema.validate(movie);
-
-}
 
 
 exports.Movie = Movie;
-exports.validateMovie = validateMovie;

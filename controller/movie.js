@@ -1,4 +1,5 @@
-const {Movie, validateMovie} = require("../models/Movie");
+const {Movie} = require("../models/Movie");
+const validateMovie = require ("./validation")
 const {Actor} = require("../models/Actor");
 
 // Get  All Movies

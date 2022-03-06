@@ -1,6 +1,6 @@
 const {MovieReview, validateReview} = require ("../models/review.models");
 const {User} = require ("../models/user.models");
-const {Movie} = require ("../models/movie");
+const {Movie} = require ("../models/Movie");
 
 // >>>>>>>>>> get Review Start <<<<<<<<<<<<<<<<<<//
 const getMovieReview = async (req , res) =>{
