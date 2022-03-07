@@ -1,5 +1,8 @@
 const express = require("express");
-const { postUser } = require("../controller/user");
+const signUp = require("../middleware/signup");
+const  forgottPassword = require ("../middleware/forgottPassword");
+const { postUser , updatePassowrd} = require("../controller/user");
 const router = express.Router();
-router.post("/" , postUser);
+router.post("/:id" , signUp, postUser);
+router.put("/updatePassword/:id" , forgottPassword, updatePassowrd)
 module.exports = router;

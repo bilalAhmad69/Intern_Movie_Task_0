@@ -1,12 +1,13 @@
 const {User}  = require ("../models/User");
 const validateUser = require ("./validation");
+const emailSender = require ("../services/mailSender");
 const bcrypt = require ("bcrypt");
 
 // post User
 const  postUser = async(req , res) =>{
     // Validate Data from frontend using Joi
-    const {error} = validateUser (req.body);
-    if (error)return res.status (400).send(error.message);
+    // const {error} = validateUser (req.body);
+    // if (error)return res.status (400).send(error.message);
     
     const {name , email, phoneNumber , password} = req.body;
     const salt = await bcrypt.genSalt(10);
@@ -33,5 +34,25 @@ const  postUser = async(req , res) =>{
         res.send(e.message);
     }
 }
+//  update Password 
+
+const updatePassowrd = async (req ,res ) =>{
+    if(!req.body.password) return res.send("kindly enter the Paswword");
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password , salt);
+    try{
+    let user = await User.findOne({email:req.body.email});
+    if(!user) return res.status(404).send("User not found");
+    user.password = hashPassword;
+    await user.save();
+    const acknowledge = await emailSender(req.body.email , "Your Account was Updated Account" , "Password Updated Successfully" );
+    res.send(acknowledge);
+    }
+    catch (e)
+    {
+        res.send(e.message);
+    }
+}
 
 exports.postUser = postUser;
+exports.updatePassowrd = updatePassowrd;

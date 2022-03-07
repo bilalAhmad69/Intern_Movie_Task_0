@@ -1,3 +1,4 @@
+const {parse}  = require ("json2csv");
 const {Movie} = require("../models/Movie");
 const validateMovie = require ("./validation")
 const {Actor} = require("../models/Actor");
@@ -129,6 +130,20 @@ const totalBusinessByActor = async (req , res) =>{
     
 }
 
+// download csv file
+const downloadCsvFile = async(req,res) =>{
+    try {
+             const movies = await  Movie.find()
+             if(movies.length < 1) res.status(404).send("Movies not Found");
+             
+    }
+    catch (e)
+    {
+         res.send(e.message)
+    }
+
+}
+
 exports.getMovies = getMovies;
 exports.getMovie = getMovie;
 exports.getMoviesByGenre = getMoviesByGenre;
@@ -136,3 +151,4 @@ exports.postMovie = postMovie;
 exports.updateMovie = updateMovie;
 exports.deleteMovie = deleteMovie;
 exports.totalBusinessByActor = totalBusinessByActor;
+exports.downloadCsvFile = downloadCsvFile;
