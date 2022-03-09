@@ -1,5 +1,4 @@
 const mongoose = require ("mongoose");
-const Joi = require("joi");
 const movieSchema = mongoose.Schema({
      name :{
          type: String, 
@@ -21,6 +20,10 @@ const movieSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "Actor",
         required: true,
+     },
+     poster : {
+         type : String,
+
      },
      rating : {
          type : Number,
