@@ -7,11 +7,19 @@ const { Actor } = require("../models/Actor");
 
 const getMovies = async (req, res) => {
   try {
+    const page = req.query.page;
+    const limit = 20;
+    console.log(limit);
     const movies = await Movie.find()
-      .select("name genre businessDone poster rating  -_id")
+      .skip(page)
+      .limit(limit)
+      .lean()
+      .select("name genre businessDone poster rating")
       .populate("actors", "name age gender -_id");
     if (movies.length < 1) return res.status(404).send("Movies not Found ");
-    res.status(200).send(movies);
+    const count = await Movie.count({});
+    const numberOfPages = count / limit;
+    res.status(200).render("movieslist.hbs", { movies, numberOfPages });
   } catch (e) {
     res.send(e.message);
   }
@@ -20,11 +28,16 @@ const getMovies = async (req, res) => {
 // get Specific movie
 const getMovie = async (req, res) => {
   try {
+    const page = req.query.page;
+    const limit = 20;
     const movie = await Movie.findById(req.params.id)
+      .skip(page)
+      .limit(limit)
+      .lean()
       .select("name genre businessDone poster rating")
-      .populate("actors", "name age gender -_id");
-    if (!movie) return res.status(404).send("Movie not Found");
-    res.status(200).send(movie);
+      .populate("actors", "firstName lastName -_id");
+    if (!movie) return res.status(404).render("Movie not found");
+    res.status(200).render("movieDetails.hbs", { movie });
   } catch (e) {
     res.send(e.message);
   }
@@ -123,7 +136,7 @@ const downloadCsvFile = async (req, res) => {
       const csv = json2csv({ movie });
       fs.appendFile("movies.csv", csv, (error) => {
         if (error) return res.send(error.message);
-        res.send("CSV File Saved Succesfully...");
+        res.send("CSV File Save Succesfully...");
       });
     });
   } catch (e) {

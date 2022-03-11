@@ -1,17 +1,41 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const config = require("config");
+const { auth, requiresAuth } = require("express-openid-connect");
+require("dotenv").config();
+const hbs = require("express-handlebars");
 const Api = require("./routes/index");
 const app = express();
 app.use(express.json());
-//  Checking Environment varaible is set ?
-if (!config.get("jwtPrivateKey")) {
-  console.error("FATAL ERROR : jwtPrivateKey is not defined ...");
-  process.exit(1);
-}
+app.use(express.static("public"));
+app.use("/uploads/images", express.static(__dirname + "/uploads/images"));
+app.engine(
+  "hbs",
+  hbs.engine({
+    extname: "hbs",
+    defaultLayout: false,
+    layoutsDir: __dirname + "/views",
+  })
+);
+app.set("views", "./views");
+app.set("view engine", "hbs");
+app.use(
+  auth({
+    authRequired: false,
+    auth0Logout: true,
+    baseURL: process.env.BASE_URL,
+    clientID: process.env.CLIENT_ID,
+    issuerBaseURL: process.env.ISSUE_BASE_URL,
+    secret: "jksdjklfjklajsdl;kajskdfja;slkdjfiajs",
+  })
+);
 
+app.get("/", (req, res) => {
+  res.render("index", {
+    title: "Movies App",
+    isAuthenticated: req.oidc.isAuthenticated(),
+  });
+});
 //  Mongodb Connection
-
 const URL = process.env.URL;
 mongoose
   .connect(URL)

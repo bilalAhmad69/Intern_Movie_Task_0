@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        .container{
+                    display: grid;
+                    border: 1px solid black;
+                    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                    gap: 10px;
+                    width:75%;
+                    height: 100vh;
+                    margin: auto;
+                    justify-content: center;
+        }
+        .card {
+                    border: 1px solid black;
+                    height: 200px;
+                    margin-right: 5px;
+        }
+    </style>
+    <body>
+    <a href="http://localhost:3000/logout"> <Button> Log Out </Button></a>
+     <div id="btns">
+    {{!-- All the links for different Pages --}}
+     </div>
+    <div class="container">
+   {{#each actors as |actor|}}
+   <div class="card">
+  <a href= "http://localhost:3000/api/actors/{{actor._id}}"><img src= {{actor.picture}} alt="picture not found"></a>
+   </div>
+    {{/each}}
+    </div>
+   
+    </body>
+    <script>
+     const value = {{numberOfPages}}
+     for (page = 1 ; page <= value; page++) 
+     {
+      const href =  document.createElement("a")
+        href.setAttribute('href',`http://localhost:3000/api/actors?page=${page}`);
+        const btn = document.createElement("button");
+        const pgNo = document.createTextNode(page);
+        btn.append(pgNo)
+        href.appendChild(btn)
+       document.getElementById("btns").appendChild(href);
+     }
+    </script>
+   
+</html>
