@@ -7,9 +7,9 @@ const { Actor } = require("../models/Actor");
 
 const getMovies = async (req, res) => {
   try {
-    const page = req.query.page;
+    let page = req.query.page;
     const limit = 20;
-    console.log(limit);
+    page = (page - 1) * limit;
     const movies = await Movie.find()
       .skip(page)
       .limit(limit)

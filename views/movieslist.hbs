@@ -12,9 +12,14 @@
                     justify-content: center;
         }
         .card {
-                    border: 1px solid black;
-                    height: 200px;
+                    
+                    height: 150px;
                     margin-right: 5px;
+        }
+        .img img
+        {
+          width:100%;
+          height: 97%;
         }
     </style>
     <body>
@@ -25,7 +30,8 @@
     <div class="container">
    {{#each movies as |movie|}}
    <div class="card">
-  <a href= "http://localhost:3000/api/movies/{{movie._id}}"><img src="/uploads/images/1646931987218_image_2.jpg" alt="picture not found"></a>
+  <a class = ".img" href= "http://localhost:3000/api/movies/{{movie._id}}"><img src="{{movie.poster}}" alt="picture not found"></a>
+  <p>{{movie.name}}</p>
    </div>
     {{/each}}
     </div>

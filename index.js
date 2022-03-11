@@ -5,9 +5,11 @@ require("dotenv").config();
 const hbs = require("express-handlebars");
 const Api = require("./routes/index");
 const app = express();
+require("./startup/prod")(app);
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/uploads/images", express.static(__dirname + "/uploads/images"));
+
 app.engine(
   "hbs",
   hbs.engine({

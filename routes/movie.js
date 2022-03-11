@@ -12,13 +12,13 @@ const {
   downloadCsvFile,
 } = require("../controller/movie");
 const router = express.Router();
-router.get("/", getMovies);
-router.get("/byGenre", getMoviesByGenre);
-router.get("/downloadCsv", downloadCsvFile);
-router.get("/totalbusiness/:id", totalBusinessByActor);
-router.get("/:id", getMovie);
-router.post("/", upload.single("picture"), postMovie);
-router.put("/:id", upload.single("picture"), updateMovie);
-router.delete("/:id", deleteMovie);
+router.get("/", requiresAuth(), getMovies);
+router.get("/byGenre", requiresAuth(), getMoviesByGenre);
+router.get("/downloadCsv", requiresAuth(), downloadCsvFile);
+router.get("/totalbusiness/:id", requiresAuth(), totalBusinessByActor);
+router.get("/:id", requiresAuth(), getMovie);
+router.post("/", requiresAuth(), upload.single("picture"), postMovie);
+router.put("/:id", requiresAuth(), upload.single("picture"), updateMovie);
+router.delete("/:id", requiresAuth(), deleteMovie);
 
 module.exports = router;

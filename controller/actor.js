@@ -5,10 +5,10 @@ const getActorsFromApi = require("../services/getActorsData");
 // Get All Actors
 const getActors = async (req, res) => {
   try {
-    const page = req.query.page;
+    let page = req.query.page;
     const limit = 20;
-    console.log(limit);
-    const actors = await Actor.find({}).skip(page).limit(limit).lean();
+    page = (page - 1) * limit;
+    let actors = await Actor.find({}).skip(page).limit(limit).lean();
     if (actors.length < 1) return res.status(404).send("No Record Found");
     const count = await Actor.count({});
     const numberOfPages = count / limit;
