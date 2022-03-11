@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
   });
 });
 //  Mongodb Connection
-const URL = process.env.URL || 3000;
+const URL = process.env.URL;
 mongoose
   .connect(URL)
   .then(() => console.log("Connected with DataBase.."))
@@ -48,6 +48,6 @@ app.use("/api", Api);
 
 // listening for request
 const PORT = process.env.PORT || 3000;
-app.listen("3000", () => {
+app.listen(PORT, () => {
   console.log(`i am listening on port ${PORT}`);
 });
