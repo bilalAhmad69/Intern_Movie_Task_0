@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { auth, requiresAuth } = require("express-openid-connect");
+const { auth } = require("express-openid-connect");
 require("dotenv").config();
 const hbs = require("express-handlebars");
 const Api = require("./routes/index");
@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
   });
 });
 //  Mongodb Connection
-const URL = process.env.URL;
+const URL = process.env.URL || 3000;
 mongoose
   .connect(URL)
   .then(() => console.log("Connected with DataBase.."))
