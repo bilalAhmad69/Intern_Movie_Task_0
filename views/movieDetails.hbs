@@ -1,77 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <style>
-              {{!-- Common Style in All Pages--}}
-          <style>
-            header {
-         display: flex;
-         justify-content: space-around;
-                 
-          }
-       button{
-            background-color: none;
-            height:  40px;
-            width : 100px;
-            font-size: 15px;
-        }
-      .pagesName > a{
-       font-size: 30px;
-       text-decoration: none;
-       margin-right: 10px;
-      }
-        
-                {{!-- Style of this page --}}
-        
-        .container{
-                    display: flex;
-                    height: 700px;
-                    width:100%;
-                    align-items: center;
-                    justify-content: center;
-          
-                   
-        }
-        .image {
-                    border: 1px solid black;
-                    height: 70%;
-                    width: 50%;
-                    margin-right: 5px;
-                    
-        }
-        .information{
-                background-color: wheat;
-                 border: 1px solid black;
-                  width: 30%;
-                  padding: 40px 40px 40px 0 ;
-        }
-        label {
-           
-            display: block;
-            margin-top: 20px;
-            font-size: 40px;
-        }
-        button{
-            background-color: none;
-            height:  40px;
-            width : 100px;
-            font-size: 15px;
-        }
-    </style>
-    <body>
-     <header>
-      <div>
-        {{#if isAuthenticated}}
-    <a href="http://localhost:3000/logout"> <Button> Log Out </Button></a>
-        {{else}}
-    <a href="http://localhost:3000/login"> <Button > Login </Button></a>
-      {{/if}}
-    </div>
-    <div class="pagesName">
-    <a href="http://localhost:3000/api/movies"> Movies  </a>
-    <a href="http://localhost:3000/api/actors"> Actors  </a>
-    </div>
-      </header>
-    
+{{>header}}
     <div class="container">
      <div class="image">
     <img src={{movie.poster}} alt="Image not found">
@@ -83,9 +10,5 @@
        <label> Rating  :   {{movie.rating}}</label>
        <label> Actor   :   {{movie.actors.firstName}} {{movie.actors.lastName}}
        </label>
-
-
      </div>
     </div>
-    </body>
-</html>

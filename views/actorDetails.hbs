@@ -1,60 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <style>
-           {{!-- Common Style in All Pages--}}
-            header {
-         display: flex;
-         justify-content: space-around;
-      }
-       button{
-            background-color: none;
-            height:  40px;
-            width : 100px;
-            font-size: 15px;
-        }
-      .pagesName > a{
-       font-size: 30px;
-       text-decoration: none;
-       margin-right: 10px;
-      }
-        
-                {{!-- Style of this page --}}
-        .container{
-                    display: flex;
-                    height: 700px;
-                    width:100%;
-                    align-items: center;
-                    justify-content: center;
-          
-                   
-        }
-        .image {
-                    border: 1px solid black;
-                    height: 70%;
-                    width: 50%;
-                    margin-right: 5px;
-                    
-        }
-        .information{
-                background-color: wheat;
-                 border: 1px solid black;
-                  width: 30%;
-                  padding: 40px 40px 40px 0 ;
-        }
-        label {
-           
-            display: block;
-            margin-top: 20px;
-            font-size: 40px;
-        }
-        img
-        {
-          width:100%;
-          height: 100%;
-        }
-    </style>
-    <body>
-    <a href="http://localhost:3000/logout"> <Button> Log Out </Button></a>
+{{>header}}
     <div class="container">
      <div class="image">
     <img src={{actor.picture}} alt="Image not found">
@@ -64,9 +8,3 @@
        <label> Age  :   {{actor.age}}</label>
        <label>  gender  :   {{actor.gender}}</label>
        </label>
-
-
-     </div>
-    </div>
-    </body>
-</html>

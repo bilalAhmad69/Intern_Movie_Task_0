@@ -2,13 +2,14 @@ const json2csv = require("json2csv").parse;
 const fs = require("fs");
 const { Movie } = require("../models/Movie");
 const { Actor } = require("../models/Actor");
+const uploadToFireBase = require("../services/uploadImagesToFirebase");
 
 // Get  All Movies
 
 const getMovies = async (req, res) => {
   try {
     let page = req.query.page;
-    const limit = 20;
+    const limit = 10;
     page = (page - 1) * limit;
     const movies = await Movie.find()
       .skip(page)
@@ -18,8 +19,13 @@ const getMovies = async (req, res) => {
       .populate("actors", "name age gender -_id");
     if (movies.length < 1) return res.status(404).send("Movies not Found ");
     const count = await Movie.count({});
-    const numberOfPages = count / limit;
-    res.status(200).render("movieslist.hbs", { movies, numberOfPages });
+    const numberOfPages = Math.round(count / limit + 1);
+    res.status(200).render("movieslist.hbs", {
+      movies,
+      numberOfPages,
+      BASEURL: process.env.BASEURL,
+      title: "Movie List",
+    });
   } catch (e) {
     res.send(e.message);
   }
@@ -28,16 +34,14 @@ const getMovies = async (req, res) => {
 // get Specific movie
 const getMovie = async (req, res) => {
   try {
-    const page = req.query.page;
-    const limit = 20;
     const movie = await Movie.findById(req.params.id)
-      .skip(page)
-      .limit(limit)
       .lean()
       .select("name genre businessDone poster rating")
       .populate("actors", "firstName lastName -_id");
     if (!movie) return res.status(404).render("Movie not found");
-    res.status(200).render("movieDetails.hbs", { movie });
+    res
+      .status(200)
+      .render("movieDetails.hbs", { movie, title: "Movie Details" });
   } catch (e) {
     res.send(e.message);
   }
@@ -60,6 +64,10 @@ const getMoviesByGenre = async (req, res) => {
 const postMovie = async (req, res) => {
   const { name, genre, businessDone, actorId } = req.body;
   try {
+    const imageFirebasePath = await uploadToFireBase(
+      req.file.path,
+      req.file.originalname
+    );
     // check the actor is registered or not
     const actor = await Actor.findById(actorId);
     if (!actor) return res.status(400).send("Given Actor Was not registered..");
@@ -68,7 +76,7 @@ const postMovie = async (req, res) => {
       genre: genre,
       businessDone: businessDone,
       actors: actorId,
-      poster: req.file.path,
+      poster: imageFirebasePath,
     });
     await movie.save();
     res.status(200).send("Movie Sucessfully Added");
@@ -79,6 +87,10 @@ const postMovie = async (req, res) => {
 
 // update Movie
 const updateMovie = async (req, res) => {
+  const imageFirebasePath = await uploadToFireBase(
+    req.file.path,
+    req.file.orignalname
+  );
   // check the front end data
   const movieObj = {};
   const { name, genre, businessDone, actorId, poster } = req.body;
@@ -87,7 +99,7 @@ const updateMovie = async (req, res) => {
   if (typeof businessDone !== "undefined")
     movieObj["businessDone"] = businessDone;
   if (typeof actorId !== "undefined") movieObj["actors"] = actorId;
-  if (typeof poster !== "undefined") movieObj["poster"] = req.file.path;
+  if (typeof poster !== "undefined") movieObj["poster"] = imageFirebasePath;
 
   try {
     const movie = await Movie.findByIdAndUpdate(req.params.id, movieObj);
@@ -130,7 +142,10 @@ const totalBusinessByActor = async (req, res) => {
 // download csv file
 const downloadCsvFile = async (req, res) => {
   try {
-    const movies = await Movie.find().populate("actors", "name");
+    const movies = await Movie.find({}).populate(
+      "actors",
+      "firstName lastName -id"
+    );
     if (movies.length < 1) res.status(404).send("Movies not Found");
     movies.map((movie) => {
       const csv = json2csv({ movie });

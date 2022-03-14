@@ -1,6 +1,7 @@
 const { Actor } = require("../models/Actor");
 const download = require("image-downloader");
 const getActorsFromApi = require("../services/getActorsData");
+const uploadToFireBase = require("../services/uploadImagesToFirebase");
 
 // Get All Actors
 const getActors = async (req, res) => {
@@ -11,8 +12,13 @@ const getActors = async (req, res) => {
     let actors = await Actor.find({}).skip(page).limit(limit).lean();
     if (actors.length < 1) return res.status(404).send("No Record Found");
     const count = await Actor.count({});
-    const numberOfPages = count / limit;
-    res.status(200).render("actors.hbs", { actors, numberOfPages });
+    const numberOfPages = Math.round(count / limit + 1);
+    res.status(200).render("actors.hbs", {
+      actors,
+      numberOfPages,
+      BASEURL: process.env.BASEURL,
+      title: "Movie List",
+    });
   } catch (e) {
     res.send(e.message);
   }
@@ -21,19 +27,23 @@ const getActors = async (req, res) => {
 const getActor = async (req, res) => {
   const actor = await Actor.findById({ _id: req.params.id }).lean();
   if (!actor) return res.status(404).send("Actor Not found");
-  res.status(200).render("actorDetails.hbs", { actor });
+  res.status(200).render("actorDetails.hbs", { actor, title: "Movie List" });
 };
 
 // post Actor
 const postActor = async (req, res) => {
   const { firstName, lastName, age, gender } = req.body;
   try {
+    const imageFirebasePath = await uploadToFireBase(
+      req.file.path,
+      req.file.orignalname
+    );
     let actor = new Actor({
       firstName: firstName,
       lastName: lastName,
       age: age,
       gender: gender,
-      picture: req.file.path,
+      picture: imageFirebasePath,
     });
 
     await actor.save();
@@ -46,13 +56,18 @@ const postActor = async (req, res) => {
 
 const updateActor = async (req, res) => {
   try {
+    const imageFirebasePath = await uploadToFireBase(
+      req.file.path,
+      req.file.orignalname
+    );
     const { firstName, lastName, age, gender, picture } = req.body;
     const updateActorObject = {};
     if (typeof firstName !== "undefined") updateActor["firstName"] = firstName;
     if (typeof lastName !== "undefined") updateActor["lastName"] = lastName;
     if (typeof age !== "undefined") updateActor["age"] = age;
     if (typeof gender !== "undefined") updateActor["gender"] = gender;
-    if (typeof picture !== "undefined") updateActor["picture"] = req.file.path;
+    if (typeof picture !== "undefined")
+      updateActor["picture"] = imageFirebasePath;
 
     const actor = await Actor.findByIdAndUpdate(
       req.params.id,
@@ -93,7 +108,7 @@ const downloadPicture = async (req, res) => {
     count = 0;
     actors.forEach(async (actor) => {
       picture = actor.picture;
-      let path = "C:\\Users\\bilal\\Downloads\\Download\\";
+      let path = "C:\\User\\";
       await createPicture(picture, path, count++);
     });
   } catch (err) {

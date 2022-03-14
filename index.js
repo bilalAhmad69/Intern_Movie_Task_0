@@ -1,21 +1,22 @@
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const { auth } = require("express-openid-connect");
 require("dotenv").config();
 const hbs = require("express-handlebars");
 const Api = require("./routes/index");
 const app = express();
-require("./startup/prod")(app);
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public/"));
 app.use("/uploads/images", express.static(__dirname + "/uploads/images"));
 
 app.engine(
   "hbs",
   hbs.engine({
     extname: "hbs",
-    defaultLayout: false,
-    layoutsDir: __dirname + "/views",
+    defaultLayout: "layout",
+    layoutsDir: __dirname + "/views/layouts/",
+    partialsDir: __dirname + "/views/partials/",
   })
 );
 app.set("views", "./views");

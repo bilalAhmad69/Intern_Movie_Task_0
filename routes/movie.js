@@ -14,10 +14,10 @@ const {
 const router = express.Router();
 router.get("/", requiresAuth(), getMovies);
 router.get("/byGenre", requiresAuth(), getMoviesByGenre);
-router.get("/downloadCsv", requiresAuth(), downloadCsvFile);
+router.get("/downloadCsv", downloadCsvFile);
 router.get("/totalbusiness/:id", requiresAuth(), totalBusinessByActor);
 router.get("/:id", requiresAuth(), getMovie);
-router.post("/", requiresAuth(), upload.single("picture"), postMovie);
+router.post("/", upload.single("picture"), postMovie);
 router.put("/:id", requiresAuth(), upload.single("picture"), updateMovie);
 router.delete("/:id", requiresAuth(), deleteMovie);
 
