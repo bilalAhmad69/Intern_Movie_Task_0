@@ -4,7 +4,7 @@
     <div class="listContainer">
    {{#each movies as |movie|}}
    <div class="card">
-  <a class = "img" href= "{{BASEURL}}/api/movies/{{movie._id}}"><img src="{{movie.poster}}" alt="picture not found"></a>
+  <a class = "img" href= "https://appmovietasknova.herokuapp.com/api/movies/{{movie._id}}"><img src="{{movie.poster}}" alt="picture not found"></a>
   <p>{{movie.name}}</p>
    </div>
     {{/each}}
@@ -16,7 +16,7 @@
      {
        
       const href =  document.createElement("a")
-        href.setAttribute('href',`{{BASEURL}}/api/movies?page=${page}`);
+        href.setAttribute('href',`https://appmovietasknova.herokuapp.com/api/movies?page=${page}`);
         const btn = document.createElement("button");
         const pgNo = document.createTextNode(page);
         btn.append(pgNo)

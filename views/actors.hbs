@@ -7,7 +7,7 @@
       
    {{#each actors as |actor|}}
    <div class="card">
-  <a class="img" href= "{{BASEURL}}/api/actors/{{actor._id}}"><img  src= {{actor.picture}} alt="picture not found"></a>
+  <a class="img" href= "https://appmovietasknova.herokuapp.com/api/actors/{{actor._id}}"><img  src= {{actor.picture}} alt="picture not found"></a>
   <p> Name : {{actor.firstName}}</p>
    </div>
     {{/each}}
@@ -19,7 +19,7 @@
      {
        
       const href =  document.createElement("a")
-        href.setAttribute('href',`{{BASEURL}}/api/actors?page=${page}`);
+        href.setAttribute('href',`https://appmovietasknova.herokuapp.com/api/actors?page=${page}`);
         const btn = document.createElement("button");
         const pgNo = document.createTextNode(page);
         btn.append(pgNo)
