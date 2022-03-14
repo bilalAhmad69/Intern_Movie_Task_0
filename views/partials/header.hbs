@@ -1,0 +1,17 @@
+    
+    
+    
+     <header>
+      <div>
+        {{#if isAuthenticated}}
+    <a href="https://appmovietasknova.herokuapp.com/logout"> <Button> Log Out </Button></a>
+        {{else}}
+    <a href="https://appmovietasknova.herokuapp.com/login"> <Button > Login </Button></a>
+      {{/if}}
+    </div>
+    <div class="pagesName">
+    <a href="https://appmovietasknova.herokuapp.com/"> HOME  </a>
+    <a href="https://appmovietasknova.herokuapp.com/api/movies"> MOVIES </a>
+    <a href="https://appmovietasknova.herokuapp.com/api/actors"> ACTORS </a>
+    </div>
+     </header>

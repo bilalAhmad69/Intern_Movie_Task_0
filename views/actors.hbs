@@ -1,0 +1,29 @@
+{{>header}}
+     </div>
+     <div id="btns" class="dynamicbtn">
+       
+     </div>
+    <div class="listContainer">
+      
+   {{#each actors as |actor|}}
+   <div class="card">
+  <a class="img" href= "https://appmovietasknova.herokuapp.com/api/actors/{{actor._id}}"><img  src= {{actor.picture}} alt="picture not found"></a>
+  <p> Name : {{actor.firstName}}</p>
+   </div>
+    {{/each}}
+    </div>
+
+    <script>
+     const value = {{numberOfPages}}
+     for (page = 1 ; page <= value; page++) 
+     {
+       
+      const href =  document.createElement("a")
+        href.setAttribute('href',`https://appmovietasknova.herokuapp.com/api/actors?page=${page}`);
+        const btn = document.createElement("button");
+        const pgNo = document.createTextNode(page);
+        btn.append(pgNo)
+        href.appendChild(btn)
+       document.getElementById("btns").appendChild(href);
+     }
+    </script>

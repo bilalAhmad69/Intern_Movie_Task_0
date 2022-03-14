@@ -1,0 +1,14 @@
+{{>header}}
+    <div class="container">
+     <div class="image">
+    <img src={{movie.poster}} alt="Image not found">
+     </div>
+     <div class  = "information">
+       <label> Movie Name  :   {{movie.name}}</label>
+       <label> Genre  :   {{movie.genre}}</label>
+       <label>  Total Earn  :   {{movie.businessDone}}</label>
+       <label> Rating  :   {{movie.rating}}</label>
+       <label> Actor   :   {{movie.actors.firstName}} {{movie.actors.lastName}}
+       </label>
+     </div>
+    </div>
